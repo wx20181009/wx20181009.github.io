@@ -1,17 +1,302 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>wx</title>
+ <script src="js/swiper.min.js"></script>
+ <link rel="stylesheet" href="css/swiper.min.css">
+<style>
+/*布局辅助框*/
+div{/*border:solid 3px gray;*/
+box-sizing:border-box;/*内边框*/}
+h1,h2{}
+/*css重置*/
+body{margin:0;background-color:#f0f0f0;}/*清除body自带外边距*/
+h1,h2{font-weight:normal/*字不加粗*/;font-size:1em;margin:0;}
+a{text-decoration:none;color:#666;}/*去除链接下划线，设置链接默认颜色*/
+img{display:block;}/*解决图片底部无故空隙*/
+/*页眉布局*/
+.yetou_beijing{background-color:rgba(255,255,255,0.8);position:fixed;width:100%;top:0;z-index:200;}
+.yetou_juzhong{width:1200px;margin:0 auto;overflow:hidden;}
+.logo,.nav{float:left;}
+.nav{margin-left:100px;}
+.gongneng{float:right;padding:13px 0;}
+.nav div{float:left;}
+.nav a{line-height:50px;display:block;padding:0 20px;transition:.3s;}
+.nav a:hover{background-color:#a40000;color:white;}
+.gongneng div{float:left;margin:0 5px;}
+.guanggao_hezi{overflow:hidden;margin-top:50px;}
+/*溢出我的范围的内容不显示
+visible显示
+auto自动添加滚动条
+*/
+
+/*用相对定位保留图片位置
+坐标先放在父级的50%的位置，再减去图片宽度的一半，就与父级中轴线对齐了。
+*/
+.guanggao_hezi img{
+position:relative;left:calc(50% - 960px);}
+.zhu_gongneng{overflow:hidden;width:1200px;margin:0 auto;}
+.zhu_gongneng div{
+float:left;
+width:calc(50% - 10px);padding:30px 0;padding-left:200px;background-color:#e8e8e8;
+margin:0 5px;
+/*引入背景图文件
+background-image:url(images/tubiao_weixin_h.png);
+设置背景图片是否重复怎样重复
+background-repeat:no-repeat;
+安放背景图在盒子的位置
+background-position:30px 30px;*/
+background-repeat:no-repeat;
+background-position:120px center;
+}
+.zhu_gongneng div:nth-child(1){
+background-image:url(images/zhu_gongneng_tubiao1.png);
+}
+.zhu_gongneng div:nth-child(1):hover{
+background-image:url(images/zhu_gongneng_tubiao1_b.png);}
+
+.zhu_gongneng div:nth-child(2){
+background-image:url(images/zhu_gongneng_tubiao2.png);}
+.zhu_gongneng div:nth-child(2):hover{
+background-image:url(images/zhu_gongneng_tubiao2_b.png);}
+.zhu_gongneng h1{font-size:40px;padding-bottom:10px;}
+.zhu_gongneng h2{font-size:18px;}
+.zhu_gongneng div:hover h1,
+.zhu_gongneng div:hover h2{color:blue;}
+/*微信盒子里面的图的第二个先不显示*/
+.weixin img:nth-child(2){display:none;}
+/*鼠标经过微信盒子的时候，里面的第二个图显示*/
+.weixin:hover img:nth-child(2){display:block;}
+/*鼠标经过微信盒子的时候，里面的第一个图不显示*/
+.weixin:hover img:nth-child(1){display:none;}
+.qq img:nth-child(2){display:none;}
+.qq:hover img:nth-child(2){display:block;}
+.qq:hover img:nth-child(1){display:none;}
+.sousuo img:nth-child(2){display:none;}
+.sousuo:hover img:nth-child(2){display:block;}
+.sousuo:hover img:nth-child(1){display:none;}
+.zuopin_daohang_beijing{width:1200px;margin:0 auto;background-image:url(images/line.png);background-repeat:repeat-x;background-position:left center;padding:40px 0;}
+.zuopin_daohang_hezi{width:400px;margin:0 auto;overflow:hidden;background-color:white;}
+.zuopin_daohang_hezi div{float:left;width:calc(100% / 3);text-align:center;}
+.erweima{/*width:100px;height:100px;background-color:blue;*/position:absolute;left:-50px;display:none;}
+.weixin{position:relative;}
+.weixin:hover .erweima{display:block;}
+/*文章列表*/
+.liebiao_hezi{overflow:hidden;width:1230px;margin:0 auto;padding-top:50px;}
+.xiangmu{width:calc(50% - 30px);float:left;margin:0 15px;background-color:white;border:solid 10px #ccc;margin-bottom:30px;transition:0.6s;}
+.xiangmu:hover{transform:translate(0,-50px);}
+.xiangmu_tu img{width:100%;}
+.shuoming{padding-left:20px;}
+.shuoming h1{line-height:50px;}
+.anniu_gengduo{width:200px;border:solid 2px red;margin:0 auto;text-align:center;line-height:40px;font-size:20px;border-radius:5px;margin-bottom:30px;}
+.yejiao_beijing{background-color:white;border-top:solid 1px #ccc;padding:30px 0;}
+.yejiao{width:1200px;margin:0 auto;overflow:hidden;}
+.yejiao_zuo{float:left;}
+.yejiao_you{float:right;line-height:40px;}
+</style>
+<style>
+    html, body {
+      position: relative;
+    }
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color:#000;
+      margin: 0;
+      padding: 0;
+    }
+    .swiper-container {
+      width: 100%;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+	  overflow: hidden;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+  </style>
+<meta charset="utf-8">
+<title>无标题文档</title>
 </head>
+
 <body>
-	<h1 style="text-align:center ">My First Page For WX</h1>
-	<div style="margin : 0px 100px 0px 100px;width: 400px,height:600px ">
-		
-		<div style="padding-left:299px ">
+<!--页头-->
+<div class="yetou_beijing">
+	<div class="yetou_juzhong">
+		<div class="logo"><img src="images/logo.png"></div>
+		<div class="nav">
+			<div><a href="">首页</a></div>
+			<div><a href="">个人简介</a></div>
+			<div><a href="">作品展示</a></div>
+			<div><a href="">联系我</a></div>
 		</div>
-		
+		<div class="gongneng">
+			<div class="weixin">
+				<img src="images/tubiao_weixin.png">
+				<img src="images/tubiao_weixin_h.png">
+				<div class="erweima"><img src="images/erweima.png"></div>
+			</div>
+			<div class="qq">
+				<img src="images/tubiao_qq.png">
+				<img src="images/tubiao_qq_h.png">
+			</div>
+			<div class="sousuo">
+				<img src="images/tubiao_sousuo.png">
+				<img src="images/tubiao_sousuo_h.png">
+			</div>
+		</div>
 	</div>
-	
+</div>
+<!--广告-->
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="images/banner01.png"></div>
+      <div class="swiper-slide"><img src="images/banner02.png"></div>
+      <div class="swiper-slide"><img src="images/banner03.png"></div>
+      <div class="swiper-slide"><img src="images/banner04.png"></div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+		<!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+  <!-- Swiper JS -->
+  <script src="js/swiper.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+  	//滑动模块
+    var swiper = new Swiper('.swiper-container', {
+		autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+	   loop: true,
+		//箭头功能
+		navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+	  //圆点分页功能
+      pagination: {
+        el: '.swiper-pagination',
+			clickable: true,
+      },
+    });
+  </script>
+<!--主要功能-->
+<div class="zhu_gongneng">
+	<div>
+		<h1>关于设计</h1>
+		<h2>我理解的设计</h2>
+	</div>
+	<div>
+		<h1>设计感悟</h1>
+		<h2>对于设计我的看法及感受</h2>	
+	</div>
+</div>
+<div class="zuopin_daohang_beijing">
+	<div class="zuopin_daohang_hezi">
+		<div>平面作品</div>
+		<div>网页作品</div>
+		<div>手绘作品</div>
+	</div>
+</div>
+<!--文章列表-->
+<div class="liebiao_hezi">
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_01.png"></div>
+		<div class="shuoming">
+			<h1>banner设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>海报设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>字体设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>LOGO设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_01.png"></div>
+		<div class="shuoming">
+			<h1>三折页设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>画册设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>图标设计</h1>
+		</div>
+	</div>
+	<div class="xiangmu">
+		<div class="xiangmu_tu"><img src="images/article_02.png"></div>
+		<div class="shuoming">
+		<h1>网站设计</h1>
+		</div>
+	</div>
+</div>
+<div class="anniu_gengduo"><a href="">点击加载更多</a></div>
+<div class="yejiao_beijing">
+	<div class="yejiao">
+		<div class="yejiao_zuo">
+			<div class="yejiao_logo"><img src="images/logo.png"></div>
+			<div class="banquan">Copyright &copy; 1998 - 2018 Tencent.All Right Reserved.Powered By Wordpress.</div>
+		</div>
+		<div class="yejiao_you">
+			<div class="sheji_tuandui">联系我&nbsp;&nbsp;&nbsp;&nbsp;<a href="">QQ</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">微信</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">微博</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">博客</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">邮箱</a></div>
+			<div class="youqing_lianjie_">友情链接&nbsp;&nbsp;&nbsp;&nbsp;<a href="">百度</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">网易UED</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">ixdc</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">UI中国</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">优设网</a></div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
